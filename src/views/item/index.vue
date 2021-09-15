@@ -1,11 +1,19 @@
 <template>
-  <div class="item-page">项目</div>
+  <div class="item-page">项目
+    <ItemDetail/>
+    <ItemList/>
+  </div>
 </template>
 
 <script>
+import ItemDetail from './itemDetail/index.vue'
+import ItemList from './itemlist/index'
 export default {
   name: '',
-  components: {},
+  components: {
+    ItemDetail,
+    ItemList
+  },
   props: [],
   data () {
     return {

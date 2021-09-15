@@ -12,7 +12,15 @@ import {
   Icon,
   Breadcrumb,
   Dropdown,
-  Avatar
+  Avatar,
+  message,
+  Space,
+  DatePicker,
+  Select,
+  Table,
+  Tag,
+  LocaleProvider
+
 } from 'ant-design-vue'
 
 Vue.use(Button)
@@ -27,3 +35,11 @@ Vue.use(Button)
   .use(Breadcrumb)
   .use(Dropdown)
   .use(Avatar)
+  .use(Space)
+  .use(DatePicker)
+  .use(Select)
+  .use(Table)
+  .use(Tag)
+  .use(LocaleProvider)
+
+Vue.prototype.$message = message

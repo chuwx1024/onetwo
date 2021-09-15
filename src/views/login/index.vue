@@ -12,15 +12,15 @@
               <h2>星云隐私计算平台</h2>
               <h2>欢迎登录</h2>
             </a-form-model-item>
-            <a-form-model-item  prop="name" >
-              <a-input ref="name" v-model="form.name" place-holder="用户名"  >
+            <a-form-model-item  prop="mobile" >
+              <a-input ref="name" v-model="form.mobile" place-holder="用户名"  >
                 <svg slot="prefix" class="icon" aria-hidden=“true” >
                   <use xlink:href="#icon-custom-user"></use>
                 </svg>
               </a-input>
             </a-form-model-item>
-            <a-form-model-item  prop="password" >
-              <a-input-password v-model="form.password" placeholder="密码" >
+            <a-form-model-item  prop="code" >
+              <a-input-password v-model="form.code" placeholder="密码" >
                 <svg slot="prefix" class="icon" aria-hidden=“true” >
                   <use xlink:href="#icon-password"></use>
                 </svg>
@@ -43,6 +43,7 @@
 
 <script>
 import { login } from '@/api/login'
+import { saveData } from '@/utils/Cookie'
 export default {
   name: '',
   components: {},
@@ -50,15 +51,15 @@ export default {
   data () {
     return {
       form: {
-        name: '',
-        password: ''
+        mobile: '13911111111',
+        code: '246810'
       },
       rules: {
-        name: [
+        mobile: [
           { required: true, message: '请输入用户名', trigger: 'blur' },
           { min: 6, max: 11, message: '6-11位数字', trigger: 'blur' }
         ],
-        password: [
+        code: [
           { required: true, message: '请输入密码', trigger: 'blur' }
         ]
       }
@@ -69,16 +70,24 @@ export default {
   created () {},
   methods: {
     onsubmit (formName) {
-      this.$refs[formName].validate(async valid => {
-        if (valid) {
-          const data = {
-            username: this.form.name,
-            password: this.form.password
+      try {
+        this.$refs[formName].validate(async valid => {
+          if (valid) {
+            const info = {
+              mobile: this.form.mobile,
+              code: this.form.code
+            }
+            const { data } = await login(info)
+            // 存储到公共区域
+            this.$store.commit('setUser', data.data)
+            saveData('Authorization', data.data)
+            this.$message.success('登录成功')
+            this.$router.push('/home')
           }
-          const res = await login(data)
-          console.log(res)
-        }
-      })
+        })
+      } catch (err) {
+        this.$message.error('登录失败' + err)
+      }
     }
   }
 }

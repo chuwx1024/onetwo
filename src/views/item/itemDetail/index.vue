@@ -1,12 +1,13 @@
 <template>
-  <div class="data-page">
-    <router-view></router-view>
+  <div class="item-detail">
+    详情
   </div>
 </template>
 
 <script>
+import { mapState } from 'vuex'
 export default {
-  name: '',
+  name: 'ItemDetail',
   components: {},
   props: [],
   data () {
@@ -14,10 +15,11 @@ export default {
 
     }
   },
-  computed: {},
-  watch: {},
-  created () {
+  computed: {
+    ...mapState(['itemlist'])
   },
+  watch: {},
+  created () {},
   methods: {}
 }
 

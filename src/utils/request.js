@@ -1,7 +1,6 @@
 import axios from 'axios'
 const request = axios.create({
-  baseURL: '/xativa/v1/client',
-  timeout: 10000
+  baseURL: 'http://ttapi.research.itcast.cn/'
 })
 
 export default request
