@@ -44,6 +44,7 @@
 <script>
 import { login } from '@/api/login'
 import { saveData } from '@/utils/Cookie'
+import { mapMutations } from 'vuex'
 export default {
   name: '',
   components: {},
@@ -69,6 +70,7 @@ export default {
   watch: {},
   created () {},
   methods: {
+    ...mapMutations('User', ['SET_USER']),
     onsubmit (formName) {
       try {
         this.$refs[formName].validate(async valid => {
@@ -79,7 +81,8 @@ export default {
             }
             const { data } = await login(info)
             // 存储到公共区域
-            this.$store.commit('setUser', data.data)
+            // this.$store.commit('setUser', data.data)
+            this.SET_USER({ amount: data.data })
             saveData('Authorization', data.data)
             this.$message.success('登录成功')
             this.$router.push('/home')

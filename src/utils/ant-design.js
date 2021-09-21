@@ -19,7 +19,10 @@ import {
   Select,
   Table,
   Tag,
-  LocaleProvider
+  LocaleProvider,
+  ConfigProvider,
+  Modal,
+  Radio
 
 } from 'ant-design-vue'
 
@@ -41,5 +44,8 @@ Vue.use(Button)
   .use(Table)
   .use(Tag)
   .use(LocaleProvider)
+  .use(ConfigProvider)
+  .use(Modal)
+  .use(Radio)
 
 Vue.prototype.$message = message

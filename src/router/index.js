@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import store from '@/store/index'
-import Nprogress from 'nprogress'
+// import store from '@/store/index'
+// import Nprogress from 'nprogress
 import 'nprogress/nprogress.css'
 import Layout from '@/layout/layout.vue'
 import Login from '@/views/login'
@@ -137,21 +137,21 @@ const router = new VueRouter({
   routes
 })
 // 判断用户有没有登录 ,依据就有没有tokan
-const routerWhiteList = ['/login']
+// const routerWhiteList = ['/login']
 
-router.beforeEach((to, from, next) => {
-  Nprogress.start()
-  const token = store.state.user
-  if (token) {
-    next()
-  } else {
-    if (routerWhiteList.includes(to.path)) {
-      next()
-    } else {
-      next({ name: 'Login' })
-    }
-  }
-  Nprogress.done()
-})
+// router.beforeEach((to, from, next) => {
+//   Nprogress.start()
+//   const token = store.state.user
+//   if (token) {
+//     next()
+//   } else {
+//     if (routerWhiteList.includes(to.path)) {
+//       next()
+//     } else {
+//       next({ name: 'Login' })
+//     }
+//   }
+//   Nprogress.done()
+// })
 
 export default router

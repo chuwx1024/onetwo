@@ -1,5 +1,6 @@
 <template>
   <div class="item-page">项目
+    <h4>{{ listLength }} 条数据</h4>
     <ItemDetail/>
     <ItemList/>
   </div>
@@ -8,6 +9,7 @@
 <script>
 import ItemDetail from './itemDetail/index.vue'
 import ItemList from './itemlist/index'
+import { mapGetters } from 'vuex'
 export default {
   name: '',
   components: {
@@ -20,7 +22,9 @@ export default {
 
     }
   },
-  computed: {},
+  computed: {
+    ...mapGetters('Text', ['listLength'])
+  },
   watch: {},
   created () {},
   methods: {}

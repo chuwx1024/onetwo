@@ -34,7 +34,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(['itemlist'])
+    ...mapState('Text', ['itemlist'])
   },
   watch: {},
   created () {},
