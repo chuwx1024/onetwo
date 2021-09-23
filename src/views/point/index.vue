@@ -61,6 +61,7 @@
           <a-button >重置</a-button>
         </a-space>
     </div>
+    <pre v-html="typeData"></pre>
   </div>
 </template>
 
