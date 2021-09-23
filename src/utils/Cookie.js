@@ -1,4 +1,4 @@
-import Cookies from 'js-Cookie'
+import Cookies from 'js-cookie'
 
 // save the data
 // export const saveData = function (data) {
