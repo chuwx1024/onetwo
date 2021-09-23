@@ -28,6 +28,7 @@
         <a-radio-group
         :options="plainOptions"
         :default-value="value1"
+        v-model="value1"
         />
       </div>
       <a-table
@@ -35,18 +36,26 @@
         :data-source="data"
         :pagination="false"
         bordered
+        v-if="value1 === 'key-value'"
       >
-        <template #action>
-          <a-button shape="circle" icon="minus" />
+        <template #action="text,record,index">
+          <a-button
+            v-if="showDeleteOption(index)"
+            shape="circle"
+            icon="minus"
+            @click="deleteCurrentData(index)"
+          />
         </template>
-        <!-- <template #dataname="text,record,index" >
-          <a-input v-if="index !== data.length -1" v-model=record.dataname />
-          <a-button v-else style="width: 100%" icon="plus" type="primary" ghost>特征数据</a-button>
-        </template> -->
-        <!-- <template #params="text,record,index" style="color: red">
-          <a-input v-if="index !== 2" v-model=record.params />
-        </template> -->
       </a-table>
+      <a-form-model :model="form" v-else>
+        <a-form-model-item label="远程数据">
+          <a-input v-model="longData"/>
+        </a-form-model-item>
+        <a-form-model-item label="样式数据">
+          <a-input v-model="typeData" type="textarea" />
+        </a-form-model-item>
+
+      </a-form-model>
        <a-space style="padding: 14px 0">
           <a-button type="primary">测试</a-button>
           <a-button >重置</a-button>
@@ -65,20 +74,20 @@ const data = [
     key: '1',
     datatype: '发送远程数据',
     dataname: 'phoneNum',
-    params: '123'
+    params: 123
   },
   {
     key: '2',
     datatype: '特征数据',
     dataname: 'x0',
-    params: '5.65'
+    params: 5.65
 
   },
   {
     key: '',
     datatype: '',
     dataname: '',
-    params: ''
+    params: null
 
   }
 
@@ -94,7 +103,10 @@ export default {
   data () {
     return {
       visible: false,
-
+      form: {
+        longData: {},
+        typeData: {}
+      },
       data,
       plainOptions: ['JSON', 'key-value'],
       value1: 'JSON',
@@ -115,7 +127,14 @@ export default {
           customRender: (value, row, index) => {
             const child = this.$createElement('a-button', {
               domProps: {
-                innerHTMl: <a-button style="width: 100%" icon="plus" type="primary" ghost>特征数据</a-button>
+                innerHTML: '特征数据'
+              },
+              style: {
+                width: '100%'
+              },
+              attrs: {
+                type: 'primary',
+                ghost: true
               },
               on: {
                 click: () => {
@@ -131,7 +150,7 @@ export default {
                 }
               }
             }
-            return <a-input v-model={row.params} />
+            return <a-input v-model={row.dataname} />
           }
 
         },
@@ -158,12 +177,31 @@ export default {
           key: 'action',
           scopedSlots: { customRender: 'action' }
         }
-      ]
+      ],
+      n: 1
     }
   },
-  mounted () {
+  mounted () {},
+  computed: {
+    longData () {
+      const obj = {}
+      const { params, dataname } = this.data[0]
+      obj[dataname] = Number(params)
+
+      return JSON.stringify(obj)
+    },
+    typeData () {
+      const obj = this.data.reduce((obj, item, index) => {
+        if (index !== 0 && index !== this.data.length - 1) {
+          const { params, dataname } = item
+          obj[dataname] = Number(params)
+        }
+        return obj
+      }, {})
+      return JSON.stringify(obj, null, 4)
+    }
+
   },
-  computed: {},
   watch: {},
   created () {
 
@@ -174,13 +212,25 @@ export default {
     },
     addNewData () {
       const length = this.data.length
+      const dataname = 'x' + this.n++
       this.data.splice(length - 1, 0, {
         key: '',
         datatype: '',
-        dataname: '888',
-        params: '888'
+        dataname: dataname,
+        params: parseInt(Math.random() * 10)
+      })
+    },
+    // 不显示删除按钮
+    showDeleteOption (index) {
+      return index !== 0 && index !== 1 && index !== this.data.length - 1
+    },
+    // 删除当前值
+    deleteCurrentData (index) {
+      this.data = this.data.filter((item, i) => {
+        return i !== index
       })
     }
+
   }
 }
 
@@ -190,6 +240,12 @@ export default {
 .point-page {
   background: white;
   padding: 30px;
+  .ant-form-item {
+    display: flex;
+    /deep/ .ant-form-item-control-wrapper {
+      width: 80%;
+    }
+  }
 }
 .detail {
   padding: 30px 0;
